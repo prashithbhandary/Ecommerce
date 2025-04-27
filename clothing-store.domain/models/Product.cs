@@ -26,6 +26,8 @@ namespace clothing_store.domain.models
 
     public int Stock { get; set; }
 
+    public decimal? rating { get; set; }
+
     [ForeignKey("Category")]
     public int CategoryId { get; set; }
     public virtual Category Category { get; set; }

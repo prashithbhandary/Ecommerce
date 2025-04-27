@@ -15,10 +15,10 @@ namespace clothing_store.domain.models
     public int Id { get; set; }
 
     [MaxLength(50)]
-    public string? Size { get; set; }
+    public string Size { get; set; }
 
     [MaxLength(50)]
-    public string? Color { get; set; }
+    public string Color { get; set; }
 
     public int Stock { get; set; }
 

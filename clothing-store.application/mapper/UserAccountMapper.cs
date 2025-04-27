@@ -20,6 +20,7 @@ namespace clothing_store.infrastructure.mapper
       public Address MapAddDtoToAddress(AddAddressDto dto)
       {
       var address = new Address { };
+            address.name=dto.name;
       address.addressLine1 = dto.AddressLine1;
       address.addressLine2 = dto.AddressLine2;
       address.City = dto.City;
@@ -27,18 +28,23 @@ namespace clothing_store.infrastructure.mapper
       address.PostalCode = dto.PostalCode;
       address.Country = dto.Country;
       address.UserId = dto.UserId;
+            address.IsPrimary = dto.IsPrimary;
       return address;
       }
 
       public Address MapUpdateDtoToAddress(UpdateAddressDto dto)
       {
       var address = new Address { };
+            address.Id = dto.Id;
+            address.UserId=dto.UserId;
+            address.name= dto.name;
       address.addressLine1 = dto.AddressLine1;
         address.addressLine2 = dto.AddressLine2;
         address.City = dto.City;
         address.State = dto.State;
         address.PostalCode = dto.PostalCode;
         address.Country = dto.Country;
+            address.IsPrimary = dto.IsPrimary;
       return address;
     }
     }

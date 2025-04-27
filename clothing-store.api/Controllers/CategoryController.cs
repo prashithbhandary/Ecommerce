@@ -1,5 +1,6 @@
 using clothing_store.application.Dtos;
 using clothing_store.application.interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace clothing_store.api.Controllers
@@ -30,6 +31,7 @@ namespace clothing_store.api.Controllers
       return Ok(category);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost("addcategory")]
     public async Task<IActionResult> Create(CreateCategoryDto dto)
     {
@@ -37,20 +39,22 @@ namespace clothing_store.api.Controllers
       return CreatedAtAction(nameof(GetById), new { id }, dto);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPut("updatecategory")]
     public async Task<IActionResult> Update(UpdateCategoryDto dto)
     {
       var success = await _categoryService.UpdateAsync(dto);
       if (!success) return NotFound();
-      return Ok("Category updated");
+      return Ok(new { message = "Category updated" });
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpDelete("deletecategory/{id}")]
     public async Task<IActionResult> Delete(int id)
     {
       var success = await _categoryService.DeleteAsync(id);
       if (!success) return NotFound();
-      return Ok("Category deleted");
+      return Ok(new { message = "Category deleted" });
     }
   }
 }

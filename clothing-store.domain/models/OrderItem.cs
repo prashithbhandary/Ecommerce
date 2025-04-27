@@ -17,7 +17,7 @@ namespace clothing_store.domain.models
     public int ProductId { get; set; }
     public virtual Product Product { get; set; }
 
-    public int? ProductVariantId { get; set; }
+    public int ProductVariantId { get; set; }
     public virtual ProductVariant? Variant { get; set; }
 
     [Required]

@@ -40,7 +40,7 @@ namespace clothing_store.application.services
         Email = registerDto.Email,
         PhoneNumber = registerDto.PhoneNumber,
         PasswordHash = hashedPassword,
-        IsAdmin = false
+        IsAdmin = registerDto.IsAdmin
       };
 
       return await _accountRepository.CreateAsync(user);
@@ -60,7 +60,23 @@ namespace clothing_store.application.services
       return await _accountRepository.GetByEmailAsync(email);
     }
 
-    public async Task<bool> UpdateAsync(UpdateUserDto userDto)
+    public async Task<IEnumerable<ApplicationUser>> GetAllUsersAsync()
+    {
+      return await _accountRepository.GetAllUsersAsync();
+    }
+
+    public async Task<ApplicationUser> GetUserByEmailAsync(string email)
+        {
+            return await _accountRepository.GetByEmailAsync(email);
+        }
+
+        public async Task<ApplicationUser> GetUserByIdAsync(int UserId)
+        {
+            return await _accountRepository.GetByIdAsync(UserId);
+
+        }
+
+        public async Task<bool> UpdateAsync(UpdateUserDto userDto)
     {
       var user = await _accountRepository.GetByEmailAsync(userDto.Email);
       if (user == null) return false; // User not found
@@ -87,23 +103,37 @@ namespace clothing_store.application.services
       return await _accountRepository.UpdateAsync(user);
     }
 
-    public async Task<bool> AddAddressAsync(AddAddressDto dto)
-    {
+        public async Task<IEnumerable<Address>> GetAllAddressesAsync(int userId)
+        {
+            return await _accountRepository.GetAllAddressesByUserIdAsync(userId);
+        }
 
-      var address = _userAccountMapper.MapAddDtoToAddress(dto);
+        public async Task<Address?> GetAddressByIdAsync(int id)
+        {
+            return await _accountRepository.GetAddressByIdAsync(id);
+        }
 
-      return await _accountRepository.AddAddressAsync(address);
+        public async Task<bool> DeleteAddressAsync(int id)
+        {
+            var address = await _accountRepository.GetAddressByIdAsync(id);
+            if (address == null) return false;
+            return await _accountRepository.DeleteAddressAsync(address);
+        }
+
+        public async Task<bool> AddAddressAsync(AddAddressDto dto)
+        {
+            var address = _userAccountMapper.MapAddDtoToAddress(dto);
+            return await _accountRepository.AddAddressAsync(address);
+        }
+
+        public async Task<bool> UpdateAddressAsync(UpdateAddressDto dto)
+        {
+            var address = await _accountRepository.GetAddressByIdAsync(dto.Id);
+            if (address == null) return false;
+
+            address = _userAccountMapper.MapUpdateDtoToAddress(dto);
+            return await _accountRepository.UpdateAddressAsync(address);
+        }
+
     }
-
-    public async Task<bool> UpdateAddressAsync(UpdateAddressDto dto)
-    {
-      var address = await _accountRepository.GetAddressByIdAsync(dto.Id);
-      if (address == null) return false;
-
-      address = _userAccountMapper.MapUpdateDtoToAddress(dto);
-
-      return await _accountRepository.UpdateAddressAsync(address);
-    }
-
-  }
 }

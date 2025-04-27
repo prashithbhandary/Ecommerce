@@ -22,11 +22,21 @@ namespace clothing_store.infrastructure.Repositories
       return await _context.ApplicationUser.FirstOrDefaultAsync(u => u.Email == email);
     }
 
+    public async Task<ApplicationUser?> GetByIdAsync(int userId)
+    {
+      return await _context.ApplicationUser.FirstOrDefaultAsync(u => u.Id == userId);
+    }
+
     public async Task<bool> CreateAsync(ApplicationUser user)
     {
       _context.ApplicationUser.Add(user);
       return await _context.SaveChangesAsync() > 0;
     }
+
+    public async Task<IEnumerable<ApplicationUser>> GetAllUsersAsync()
+        {
+            return await _context.ApplicationUser.ToListAsync();
+        }
 
     public async Task<bool> UpdateAsync(ApplicationUser user)
     {
@@ -40,22 +50,70 @@ namespace clothing_store.infrastructure.Repositories
       return await _context.SaveChangesAsync() > 0;
     }
 
-    public async Task<bool> AddAddressAsync(Address address)
-    {
-      _context.Addresses.Add(address);
-      return await _context.SaveChangesAsync() > 0;
-    }
+        public async Task<bool> AddAddressAsync(Address address)
+        {
+            if (address.IsPrimary)
+            {
+                var existingPrimary = await _context.Addresses
+                    .Where(a => a.UserId == address.UserId && a.IsPrimary)
+                    .ToListAsync();
 
-    public async Task<Address?> GetAddressByIdAsync(int id)
+                foreach (var addr in existingPrimary)
+                {
+                    addr.IsPrimary = false;
+                }
+            }
+
+            _context.Addresses.Add(address);
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool> UpdateAddressAsync(Address address)
+        {
+            if (address.IsPrimary)
+            {
+                var existingPrimary = await _context.Addresses
+                    .Where(a => a.UserId == address.UserId && a.Id != address.Id && a.IsPrimary)
+                    .ToListAsync();
+
+                foreach (var addr in existingPrimary)
+                {
+                    addr.IsPrimary = false;
+                }
+            }
+
+            var tracked = await _context.Addresses.FindAsync(address.Id);
+
+            if (tracked != null)
+            {
+                _context.Entry(tracked).CurrentValues.SetValues(address);
+            }
+            else
+            {
+                _context.Addresses.Update(address); // fallback if not already tracked
+            }
+
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+
+        public async Task<Address?> GetAddressByIdAsync(int id)
     {
       return await _context.Addresses.FindAsync(id);
     }
 
-    public async Task<bool> UpdateAddressAsync(Address address)
-    {
-      _context.Addresses.Update(address);
-      return await _context.SaveChangesAsync() > 0;
-    }
+        public async Task<IEnumerable<Address>> GetAllAddressesByUserIdAsync(int userId)
+        {
+            return await _context.Addresses
+                .Where(a => a.UserId == userId)
+                .ToListAsync();
+        }
 
-  }
+        public async Task<bool> DeleteAddressAsync(Address address)
+        {
+            _context.Addresses.Remove(address);
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+    }
 }

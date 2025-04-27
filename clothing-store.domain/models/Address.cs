@@ -7,7 +7,11 @@ public class Address
   [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
   public int Id { get; set; }
 
-  [Required]
+    [Required]
+    [MaxLength(30)]
+    public string name { get; set; }
+
+    [Required]
   [MaxLength(255)]
   public string addressLine1 { get; set; }
 
@@ -34,6 +38,9 @@ public class Address
   [Required]
   public int UserId { get; set; }
 
+  public bool IsPrimary { get; set; } = false;
+
   [ForeignKey("UserId")]
   public virtual ApplicationUser User { get; set; }
+
 }

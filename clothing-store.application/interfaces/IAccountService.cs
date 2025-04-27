@@ -14,6 +14,15 @@ namespace clothing_store.application.interfaces
     Task<bool> UpdateAsync(UpdateUserDto userDto);
     Task<bool> DeleteAccountAsync(string email);
     Task<bool> ResetPasswordAsync(ResetPasswordDto resetDto);
+    Task<IEnumerable<ApplicationUser>> GetAllUsersAsync();
+    Task<ApplicationUser> GetUserByEmailAsync(string email);
+    Task<ApplicationUser> GetUserByIdAsync(int userId);
+    Task<IEnumerable<Address>> GetAllAddressesAsync(int userId);
+
+    Task<Address?> GetAddressByIdAsync(int id);
+
+    Task<bool> DeleteAddressAsync(int id);
+
     Task<bool> AddAddressAsync(AddAddressDto dto);
     Task<bool> UpdateAddressAsync(UpdateAddressDto dto);
 

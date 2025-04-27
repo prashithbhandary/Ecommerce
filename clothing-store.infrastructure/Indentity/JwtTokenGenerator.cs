@@ -1,16 +1,12 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace clothing_store.infrastructure.Indentity
 {
-  public class JwtTokenGenerator
+    public class JwtTokenGenerator
   {
     private readonly IConfiguration _config;
 
@@ -21,7 +17,7 @@ namespace clothing_store.infrastructure.Indentity
 
     public string GenerateToken(ApplicationUser user)
     {
-      var claims = new[]
+      var claims = new List<Claim>
       {
             new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new Claim(JwtRegisteredClaimNames.Email, user.Email),
@@ -29,7 +25,12 @@ namespace clothing_store.infrastructure.Indentity
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()) // Unique ID for security
         };
 
-      var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+       if (user.IsAdmin)
+       {
+           claims.Add(new Claim(ClaimTypes.Role, "Admin")); // <- THIS IS REQUIRED
+       }
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
       var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
       var token = new JwtSecurityToken(
