@@ -1,0 +1,32 @@
+<div class="container my-5">
+  <div class="row">
+    <div class="col-md-3">
+      <app-category-filter></app-category-filter>
+    </div>
+    <div class="col-md-9">
+      <div class="row mb-4">
+        <div class="col-12">
+          <h2>Our Collection</h2>
+          <hr>
+        </div>
+      </div>
+
+      <div *ngIf="isLoading" class="text-center my-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-md-4" *ngFor="let product of products">
+          <app-product-card [product]="product"></app-product-card>
+        </div>
+      </div>
+
+      <div *ngIf="!isLoading && products.length === 0" class="text-center my-5">
+        <h4>No products found</h4>
+        <p>Try adjusting your search or filter criteria</p>
+      </div>
+    </div>
+  </div>
+</div>

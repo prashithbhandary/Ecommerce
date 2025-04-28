@@ -1,0 +1,69 @@
+<div class="container my-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-5">
+        <div class="card shadow-sm">
+          <div class="card-body p-5">
+            <h2 class="card-title text-center mb-4">Add User</h2>
+  
+            <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+              <div class="mb-3">
+                <label for="fullName" class="form-label">Full Name</label>
+                <input type="text" class="form-control" id="fullName" formControlName="fullName"
+                  [ngClass]="{'is-invalid': userForm.get('fullName')?.invalid && userForm.get('fullName')?.touched}">
+                <div class="invalid-feedback" *ngIf="userForm.get('fullName')?.hasError('required')">
+                  Full Name is required
+                </div>
+              </div>
+  
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" formControlName="email"
+                  [ngClass]="{'is-invalid': userForm.get('email')?.invalid && userForm.get('email')?.touched}">
+                <div class="invalid-feedback" *ngIf="userForm.get('email')?.hasError('required')">
+                  Email is required
+                </div>
+                <div class="invalid-feedback" *ngIf="userForm.get('email')?.hasError('email')">
+                  Enter a valid email
+                </div>
+              </div>
+  
+              <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" formControlName="password"
+                  [ngClass]="{'is-invalid': userForm.get('password')?.invalid && userForm.get('password')?.touched}">
+                <div class="invalid-feedback" *ngIf="userForm.get('password')?.hasError('required')">
+                  Password is required
+                </div>
+                <div class="invalid-feedback" *ngIf="userForm.get('password')?.hasError('minlength')">
+                  Password must be at least 6 characters
+                </div>
+              </div>
+  
+              <div class="mb-3">
+                <label for="phoneNumber" class="form-label">Phone Number</label>
+                <input type="tel" class="form-control" id="phoneNumber" formControlName="phoneNumber"
+                  [ngClass]="{'is-invalid': userForm.get('phoneNumber')?.invalid && userForm.get('phoneNumber')?.touched}">
+                <div class="invalid-feedback" *ngIf="userForm.get('phoneNumber')?.hasError('required')">
+                  Phone number is required
+                </div>
+              </div>
+  
+              <div class="form-check form-switch mb-3" *ngIf="!userEmail">
+                <input class="form-check-input" type="checkbox" id="isAdmin" formControlName="isAdmin">
+                <label class="form-check-label" for="isAdmin">Make Admin</label>
+              </div>              
+  
+              <button type="submit" class="btn btn-dark w-100" [disabled]="isLoading">
+                <span *ngIf="!isLoading">{{ userEmail ? 'Update User' : 'Create User' }}</span>
+                <span *ngIf="isLoading">
+                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                  {{ userEmail ? 'Updating...' : 'Creating...' }}
+                </span>
+              </button>              
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

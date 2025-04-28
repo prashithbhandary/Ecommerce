@@ -1,0 +1,57 @@
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2>Manage Categories</h2>
+      <button routerLink="/admin/categories/new" class="btn btn-dark" [disabled]="isLoading">
+        <i class="fa fa-plus"></i> Add Category
+      </button>
+    </div>
+  
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="isLoading">
+                <td colspan="3" class="text-center">
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                </td>
+              </tr>
+              <tr *ngFor="let category of categories$ | async">
+                <td>{{ category.name }}</td>
+                <td>
+                  <p class="text-muted mb-0" *ngIf="category.description; else noDescription">
+                    {{ category.description | truncate:50 }}
+                  </p>
+                  <ng-template #noDescription>
+                    <span class="text-muted fst-italic">No description</span>
+                  </ng-template>
+                </td>
+                <td>
+                  <div class="btn-group">
+                    <a [routerLink]="['/admin/categories/edit', category.id]" 
+                      class="btn btn-sm btn-outline-primary">
+                      Edit
+                    </a>
+                    <button (click)="deleteCategory(category.id)" 
+                            class="btn btn-sm btn-outline-danger"
+                            [disabled]="isLoading">
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,16 @@
+<div class="card mb-4 shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title">Categories</h5>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item list-group-item-action" 
+            *ngFor="let category of categories$ | async"
+            (click)="filterByCategory(category.name)">
+          {{category.name}}
+        </li>
+        <li class="list-group-item list-group-item-action text-primary" 
+            (click)="clearFilters()">
+          All Products
+        </li>
+      </ul>
+    </div>
+  </div>

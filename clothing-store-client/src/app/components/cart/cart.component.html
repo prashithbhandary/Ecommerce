@@ -1,0 +1,104 @@
+<!-- NOT AUTHENTICATED -->
+<div *ngIf="!isAuthenticated" class="alert alert-warning text-center">
+  <h4>Please login or register to view your cart</h4>
+  <p class="mb-3">You must be logged in to access your shopping cart.</p>
+  <button class="btn btn-dark me-2" routerLink="/login">Login</button>
+  <button class="btn btn-outline-secondary" routerLink="/register">Register</button>
+</div>
+
+<!-- AUTHENTICATED -->
+<div *ngIf="isAuthenticated">
+  <div class="container my-5">
+    <div class="row">
+      <div class="col-12">
+        <h2>Shopping Cart</h2>
+        <hr>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-8">
+        <div *ngIf="(cartItems$ | async)?.length === 0" class="alert alert-info">
+          Your cart is empty. <a routerLink="/products" class="alert-link">Continue shopping</a>
+        </div>
+
+        <!-- CART ITEM -->
+        <div class="card mb-3" *ngFor="let item of cartItems$ | async">
+          <div class="row g-0">
+            <div class="col-md-3">
+              <img [src]="getMainImageUrl(item)" class="img-fluid rounded-start" [alt]="item.product.name">
+            </div>
+            <div class="col-md-9">
+              <div class="card-body">
+                <div class="d-flex justify-content-between">
+                  <h5 class="card-title">{{ item.product.name }}</h5>
+                  <button class="btn btn-sm btn-outline-danger" (click)="removeItem(item)">
+                    <i class="fa fa-trash"></i>
+                  </button>
+                </div>
+                <p class="card-text text-muted">
+                  {{ item.product.description | slice: 0:100 }}...
+                </p>
+                <div class="row">
+                  <div class="col-md-4">
+                    <p class="mb-1"><strong>Price:</strong> ${{ item.product.price }}</p>
+                  </div>
+                  <div class="col-md-4" *ngIf="item.variant?.size">
+                    <p class="mb-1"><strong>Size:</strong> {{ item.variant?.size }}</p>
+                  </div>
+                  <div class="col-md-4" *ngIf="item.variant?.color">
+                    <p class="mb-1"><strong>Color:</strong> {{ item.variant?.color }}</p>
+                  </div>
+                </div>
+
+                <div class="d-flex align-items-center mt-3">
+                  <div class="input-group" style="width: 150px;">
+                    <button class="btn btn-outline-dark" type="button" (click)="updateQuantity(item, item.quantity - 1)">-</button>
+                    <input type="text" class="form-control text-center" [value]="item.quantity" readonly />
+                    <button class="btn btn-outline-dark" type="button" (click)="updateQuantity(item, item.quantity + 1)">+</button>
+                  </div>
+                  <div class="ms-auto">
+                    <h5 class="mb-0">${{ (item.product.price * item.quantity).toFixed(2) }}</h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CLEAR CART -->
+        <button *ngIf="(cartItems$ | async)?.length ?? 0 > 0" class="btn btn-outline-danger" (click)="clearCart()">
+          Clear Cart
+        </button>
+      </div>
+
+      <!-- ORDER SUMMARY -->
+      <div class="col-md-4">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">Order Summary</h5>
+            <hr />
+            <div class="d-flex justify-content-between mb-3" *ngIf="cartItems$ | async as items">
+              <span>Subtotal ({{ items.length }} items)</span>
+              <span>${{ (totalAmount$ | async)?.toFixed(2) }}</span>
+            </div>
+            <div class="d-flex justify-content-between mb-3">
+              <span>Shipping</span>
+              <span>Free</span>
+            </div>
+            <hr />
+            <div class="d-flex justify-content-between mb-4">
+              <h5>Total</h5>
+              <h5>${{ (totalAmount$ | async)?.toFixed(2) }}</h5>
+            </div>
+            <button class="btn btn-dark w-100"
+        [disabled]="(cartItems$ | async)?.length === 0"
+        routerLink="/checkout">
+  Proceed to Checkout
+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,86 @@
+<div class="container my-5" *ngIf="product">
+  <div class="row">
+    <div class="col-md-6">
+      <!-- Carousel Start -->
+      <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">     
+        <div class="carousel-inner rounded shadow-sm">
+          <div *ngFor="let image of sortedImages(); let i = index" [ngClass]="i === 0 ? 'carousel-item active' : 'carousel-item'">
+            <img [src]="image.imageUrl" class="d-block w-100 img-fluid" [alt]="product.name" style="max-height: 400px; object-fit: contain;">
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon"></span>
+        </button>
+      </div>
+      <!-- Carousel End -->
+    </div>
+    <div class="col-md-6">
+      <h2>{{ product.name }}</h2>
+
+      <div class="mb-3">
+        <span class="text-warning d-inline-flex align-items-center">
+          <div *ngFor="let star of [1,2,3,4,5]">
+            <svg width="24" height="24" viewBox="0 0 24 24">
+              <path fill="#ddd" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              <path fill="#ffd700" 
+                    [attr.d]="getStarPath(star)" 
+                    [style.clip-path]="'inset(0 ' + (100 - getFillPercentage(star)) + '% 0 0)'"/>
+            </svg>
+          </div>
+        </span>
+        <span class="ms-2 text-muted">({{ product.rating || 0 }}/5)</span>
+      </div>
+
+      <h3 class="mb-4">${{ product.price }}</h3>
+      <p class="mb-4">{{ product.description }}</p>
+
+      <!-- Size Dropdown -->
+      <div class="mb-4" *ngIf="availableSizes.length > 0">
+        <h5>Size</h5>
+        <select class="form-select" [(ngModel)]="selectedSize" (change)="onSizeSelected($event)">
+          <option *ngFor="let size of availableSizes" [value]="size">{{ size }}</option>
+        </select>     
+      </div>
+
+      <!-- Color Dropdown -->
+      <div class="mb-4" *ngIf="availableColors.length > 0">
+        <h5>Color</h5>
+        <select class="form-select" [(ngModel)]="selectedColor" (change)="onColorSelected($event)">
+          <option *ngFor="let color of availableColors" [value]="color">{{ color }}</option>
+        </select>
+      </div>
+
+      <!-- Quantity -->
+      <div class="mb-4">
+        <h5>Quantity</h5>
+        <div class="input-group" style="width: 150px;">
+          <button class="btn btn-outline-dark" type="button" (click)="decreaseQuantity()">-</button>
+          <input type="text" class="form-control text-center" [value]="quantity" readonly>
+          <button class="btn btn-outline-dark" type="button" (click)="increaseQuantity()">+</button>
+        </div>
+      </div>
+
+      <!-- Add to Cart -->
+      <button class="btn btn-dark btn-lg w-100 mb-3"
+              [disabled]="!isInStock"
+              (click)="addToCart()">
+        Add to Cart
+      </button>
+      <div *ngIf="selectedVariant">
+        <p *ngIf="isInStock" class="text-success">
+          In stock ({{ selectedVariant.stock }} available)
+        </p>
+        <p *ngIf="!isInStock" class="text-danger">
+          Out of stock
+        </p>
+      </div>      
+
+      <div class="alert alert-light">
+        <small class="text-muted">Free shipping on orders over $100</small>
+      </div>
+    </div>
+  </div>
+</div>

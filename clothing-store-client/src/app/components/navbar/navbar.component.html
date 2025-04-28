@@ -1,0 +1,85 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+  <div class="container">
+    <a class="navbar-brand" routerLink="/">Fashion Boutique</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/" routerLinkActive="active">Home</a>
+        </li>
+        <li class="nav-item dropdown" *ngIf="categories$ | async as categories">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Categories
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li *ngFor="let category of categories">
+              <a class="dropdown-item" [routerLink]="['/products']" [queryParams]="{ categoryId: category.id }">
+                {{ category.name }}
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <div *ngIf="isAdmin" class="mx-2">
+        <a class="btn btn-warning" routerLink="/admin">
+          <i class="fa fa-tools me-1"></i> Admin Panel
+        </a>
+      </div>
+      <div class="d-flex">
+        <app-search></app-search>
+        <div class="mx-3 position-relative">
+          <a class="btn btn-outline-dark" routerLink="/cart">
+            <i class="fa fa-shopping-cart"></i>
+            <span *ngIf="cartItemCount$ | async as count"
+              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+              {{count}}
+            </span>
+          </a>
+        </div>
+        <div *ngIf="!(isAuthenticated$ | async)">
+          <a class="btn btn-outline-primary me-2" routerLink="/login">Login</a>
+          <a class="btn btn-primary" routerLink="/register">Register</a>
+        </div>
+        <!-- Add this inside the authenticated section -->
+        <div *ngIf="isAuthenticated$ | async" class="dropdown">
+          <button
+            class="btn btn-outline-secondary dropdown-toggle"
+            type="button"
+            id="userDropdown"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <i class="fa fa-user-circle me-1"></i> Profile
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+            <li>
+              <a class="dropdown-item" routerLink="/profile">
+                <i class="fa fa-user me-2"></i> My Profile
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" routerLink="/addresses">
+                <i class="fa fa-map-marker-alt me-2"></i> My Addresses
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" routerLink="/orders">
+                <i class="fa fa-box me-2"></i> My Orders
+              </a>
+            </li>            
+            <li><hr class="dropdown-divider"></li>
+            <li>
+              <button class="dropdown-item text-danger" (click)="logout()">
+                <i class="fa fa-sign-out-alt me-2"></i> Logout
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

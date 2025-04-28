@@ -1,0 +1,61 @@
+<!-- components/admin-orders/admin-orders.component.html -->
+
+<div class="container mt-5">
+    <h3>Admin Orders</h3>
+  
+    <!-- Filter -->
+    <div class="mb-3">
+      <label>Status Filter:</label>
+      <select [(ngModel)]="selectedStatus" (change)="filterOrders()" class="form-select w-auto d-inline-block">
+        <option value="">All</option>
+        <option value="Pending">Pending</option>
+        <option value="Processing">Processing</option>
+        <option value="Delivered">Delivered</option>
+        <option value="Cancelled">Cancelled</option>
+      </select>
+    </div>
+  
+    <!-- Orders List -->
+    <div *ngIf="adminOrders.length === 0">
+      <p>No orders found.</p>
+    </div>
+  
+    <div *ngFor="let order of adminOrders" class="card mb-3">
+      <div class="card-body">
+        <h5>Order ID: {{ order.id }}</h5>
+        <p>Customer: {{ order.customerName }} ({{ order.customerEmail }})</p>
+        <p>Status: {{ order.status }}</p>
+        <p>Total: ₹{{ order.totalAmount }}</p>
+        <button class="btn btn-primary" (click)="viewOrderDetails(order.id)">View Details</button>
+      </div>
+    </div>
+  
+    <!-- Modal -->
+    <div *ngIf="selectedOrder" class="modal fade show d-block" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5>Order Details</h5>
+            <button type="button" class="btn-close" (click)="closeModal()"></button>
+          </div>
+          <div class="modal-body">
+            <p><strong>Order ID:</strong> {{ selectedOrder.id }}</p>
+            <p><strong>Status:</strong> {{ selectedOrder.status }}</p>
+            <p><strong>Customer:</strong> {{ selectedOrder.customerName }} ({{ selectedOrder.customerEmail }})</p>
+            <p><strong>Payment Method:</strong> {{ selectedOrder.paymentMethod }}</p>
+            <p><strong>Transaction ID:</strong> {{ selectedOrder.transactionId }}</p>
+            <p><strong>Total:</strong> ₹{{ selectedOrder.totalAmount }}</p>
+            <p><strong>Address:</strong> {{ selectedOrder.address }}</p>
+  
+            <h6>Items:</h6>
+            <div *ngFor="let item of selectedOrder.items">
+              <p>• {{ item.productName }} (₹{{ item.price }} × {{ item.quantity }})</p>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>  

@@ -1,0 +1,38 @@
+<div class="container">
+    <h2 class="title">Product List</h2>
+  
+    <div class="add-button-wrapper">
+      <button routerLink="/admin/products/add" class="add-button">
+        + Add Product
+      </button>
+    </div>
+  
+    <div class="product-grid">
+      <div *ngFor="let product of products" class="product-card">
+        <div class="product-image">
+          <img [src]="getMainImage(product)" alt="{{ product.name }}" />
+        </div>
+  
+        <h3 class="product-name">{{ product.name }}</h3>
+        <p class="product-price">₹{{ product.price }}</p>
+        <p class="product-info">Stock: {{ product.stock }}</p>
+        <p class="product-info">Category: {{ product.categoryName }}</p>
+        <p class="product-info">Brand: {{ product.brandName }}</p>
+        <p class="product-info">Variants: {{ product.variants.length }}</p>
+  
+        <div class="variant-preview">
+          <div *ngFor="let v of product.variants.slice(0, 3)">
+            • {{ v.size || 'Free Size' }} / {{ v.color || 'Default' }} — Stock: {{ v.stock }}
+          </div>
+          <div *ngIf="product.variants.length > 3" class="more-variants">
+            + more variants
+          </div>
+        </div>
+  
+        <div class="edit-button-wrapper">
+          <button [routerLink]="['/admin/products/edit', product.id]" class="btn btn-sm btn-outline-primary">Edit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

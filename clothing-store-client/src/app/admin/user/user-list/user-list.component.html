@@ -1,0 +1,56 @@
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2>Manage Users</h2>
+      <button routerLink="/admin/users/new" class="btn btn-dark" [disabled]="isLoading">
+        <i class="fa fa-plus"></i> Add User
+      </button>
+    </div>
+  
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Role</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="isLoading">
+                <td colspan="5" class="text-center">
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                </td>
+              </tr>
+              <tr *ngFor="let user of users">
+                <td>{{ user.fullName }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.phoneNumber }}</td>
+                <td>
+                  <span class="badge" [ngClass]="user.isAdmin ? 'bg-danger' : 'bg-secondary'">
+                    {{ user.isAdmin ? 'Admin' : 'Customer' }}
+                  </span>
+                </td>
+                <td>
+                  <div class="btn-group">
+                    <button class="btn btn-sm btn-outline-primary" (click)="editUser(user)">
+                        Edit
+                      </button>                      
+                    <button (click)="deleteUser(user.email)" class="btn btn-sm btn-outline-danger" [disabled]="isLoading">
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  

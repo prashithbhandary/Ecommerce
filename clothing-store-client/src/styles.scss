@@ -1,0 +1,54 @@
+/* You can add global styles to this file, and also import other style files */
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+  }
+  
+  .card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+  }
+  
+  .btn {
+    transition: all 0.3s ease;
+  }
+  
+  .list-group-item-action {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    
+    &:hover {
+      background-color: #f8f9fa;
+    }
+  }
+  
+  .form-control:focus {
+    box-shadow: none;
+    border-color: #6c757d;
+  }
+  
+  .rating {
+    color: #ffc107;
+  }
+  
+  .text-primary {
+    color: #6c757d !important;
+  }
+  
+  .bg-light {
+    background-color: #f8f9fa !important;
+  }
+  
+  .shadow-sm {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+  }
+  
+  .img-fluid {
+    max-height: 100%;
+    object-fit: cover;
+  }

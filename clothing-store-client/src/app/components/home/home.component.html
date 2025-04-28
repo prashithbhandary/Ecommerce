@@ -1,0 +1,57 @@
+<div class="container my-5">
+    <!-- Hero Section -->
+    <div class="row align-items-center mb-5">
+      <div class="col-md-6">
+        <h1 class="display-4 fw-bold mb-4">New Season Arrivals</h1>
+        <p class="lead mb-4">Discover our curated collection of premium clothing for the modern wardrobe.</p>
+        <a routerLink="/products" class="btn btn-dark btn-lg">Shop Now</a>
+      </div>
+      <div class="col-md-6">
+        <img src="https://placehold.co/600x400?text=Fashion+Boutique" alt="Fashion" class="img-fluid rounded shadow">
+      </div>
+    </div>
+  
+    <!-- Featured Products -->
+    <h2 class="text-center mb-4">Featured Products</h2>
+    <div class="row g-4">
+      <div class="col-md-3" *ngFor="let product of featuredProducts">
+        <app-product-card [product]="product"></app-product-card>
+      </div>
+    </div>
+  
+    <!-- Categories -->
+    <div class="row mt-5">
+      <div class="col-12">
+        <h2 class="text-center mb-4">Shop by Category</h2>
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+              <img src="https://placehold.co/300x200?text=Shirts" class="card-img-top" alt="Shirts">
+              <div class="card-body text-center">
+                <h5 class="card-title">Shirts</h5>
+                <a routerLink="/products" [queryParams]="{category: 'Shirts'}" class="btn btn-outline-dark">View Collection</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+              <img src="https://placehold.co/300x200?text=Pants" class="card-img-top" alt="Pants">
+              <div class="card-body text-center">
+                <h5 class="card-title">Pants</h5>
+                <a routerLink="/products" [queryParams]="{category: 'Pants'}" class="btn btn-outline-dark">View Collection</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+              <img src="https://placehold.co/300x200?text=Jackets" class="card-img-top" alt="Jackets">
+              <div class="card-body text-center">
+                <h5 class="card-title">Jackets</h5>
+                <a routerLink="/products" [queryParams]="{category: 'Jackets'}" class="btn btn-outline-dark">View Collection</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

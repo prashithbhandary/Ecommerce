@@ -1,0 +1,84 @@
+<div class="container my-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-5">
+        <div class="card shadow-sm">
+          <div class="card-body p-5">
+            <h2 class="card-title text-center mb-4">
+              {{ isEditMode ? 'Edit Address' : 'Add Address' }}
+            </h2>
+  
+            <form [formGroup]="addressForm" (ngSubmit)="onSubmit()">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Address Name</label>
+                    <input type="text" class="form-control" id="name" formControlName="name"
+                      [ngClass]="{'is-invalid': addressForm.get('name')?.invalid && addressForm.get('name')?.touched}">
+                    <div class="invalid-feedback" *ngIf="addressForm.get('name')?.hasError('required')">
+                      Address Name is required
+                    </div>
+                  </div>
+              <div class="mb-3">
+                <label for="addressLine1" class="form-label">Address Line 1</label>
+                <input type="text" class="form-control" id="addressLine1" formControlName="addressLine1"
+                  [ngClass]="{'is-invalid': addressForm.get('addressLine1')?.invalid && addressForm.get('addressLine1')?.touched}">
+                <div class="invalid-feedback" *ngIf="addressForm.get('addressLine1')?.hasError('required')">
+                  Address Line 1 is required
+                </div>
+              </div>
+  
+              <div class="mb-3">
+                <label for="addressLine2" class="form-label">Address Line 2</label>
+                <input type="text" class="form-control" id="addressLine2" formControlName="addressLine2">
+              </div>
+  
+              <div class="mb-3">
+                <label for="city" class="form-label">City</label>
+                <input type="text" class="form-control" id="city" formControlName="city"
+                  [ngClass]="{'is-invalid': addressForm.get('city')?.invalid && addressForm.get('city')?.touched}">
+                <div class="invalid-feedback" *ngIf="addressForm.get('city')?.hasError('required')">
+                  City is required
+                </div>
+              </div>
+  
+              <div class="mb-3">
+                <label for="state" class="form-label">State</label>
+                <input type="text" class="form-control" id="state" formControlName="state"
+                  [ngClass]="{'is-invalid': addressForm.get('state')?.invalid && addressForm.get('state')?.touched}">
+                <div class="invalid-feedback" *ngIf="addressForm.get('state')?.hasError('required')">
+                  State is required
+                </div>
+              </div>
+  
+              <div class="mb-3">
+                <label for="postalCode" class="form-label">Postal Code</label>
+                <input type="text" class="form-control" id="postalCode" formControlName="postalCode"
+                  [ngClass]="{'is-invalid': addressForm.get('postalCode')?.invalid && addressForm.get('postalCode')?.touched}">
+                <div class="invalid-feedback" *ngIf="addressForm.get('postalCode')?.hasError('required')">
+                  Postal Code is required
+                </div>
+              </div>
+  
+              <div class="mb-3">
+                <label for="country" class="form-label">Country</label>
+                <input type="text" class="form-control" id="country" formControlName="country"
+                  [ngClass]="{'is-invalid': addressForm.get('country')?.invalid && addressForm.get('country')?.touched}">
+                <div class="invalid-feedback" *ngIf="addressForm.get('country')?.hasError('required')">
+                  Country is required
+                </div>
+              </div>
+
+              <div class="form-check mb-3">
+                <input type="checkbox" class="form-check-input" id="isPrimary" formControlName="isPrimary">
+                <label class="form-check-label" for="isPrimary">Set as Primary Address</label>
+              </div>
+  
+              <button type="submit" class="btn btn-dark w-100">
+                {{ isEditMode ? 'Update Address' : 'Add Address' }}
+              </button>
+            </form>
+  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

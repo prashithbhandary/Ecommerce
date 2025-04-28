@@ -1,0 +1,88 @@
+<div class="container my-5">
+    <h2 class="mb-4">Checkout</h2>
+  
+    <!-- User Info -->
+<div class="mt-4" *ngIf="user">
+    <h5 class="mb-2">Customer Info:</h5>
+    <div class="border rounded p-3 bg-light">
+      <div class="row">
+        <div class="col-md-6 mb-2">
+          <strong>Full Name:</strong>
+          <p class="mb-0">{{ user.fullName }}</p>
+        </div>
+        <div class="col-md-6 mb-2">
+          <strong>Email:</strong>
+          <p class="mb-0">{{ user.email }}</p>
+        </div>
+        <div class="col-md-6 mb-2">
+          <strong>Phone:</strong>
+          <p class="mb-0">{{ user.phoneNumber }}</p>
+        </div>
+      </div>
+    </div>
+  </div>  
+  
+    <!-- Shipping Address -->
+<div class="mt-4" *ngIf="shippingAddress">
+    <h5 class="mb-2 d-flex justify-content-between align-items-center">
+      <span>Shipping To:</span>
+      <button class="btn btn-sm btn-outline-primary" (click)="openAddressModal()">Change</button>
+    </h5>
+    <div class="border rounded p-3 bg-light">
+      <p class="mb-1"><strong>{{ shippingAddress.name }}</strong></p>
+      <p class="mb-1">{{ shippingAddress.addressLine1 }}</p>
+      <p class="mb-1">{{ shippingAddress.city }}, {{ shippingAddress.state }} - {{ shippingAddress.postalCode }}</p>
+    </div>
+  </div>  
+  
+    <!-- Payment Method -->
+    <div class="mt-4">
+      <label class="form-label">Payment Method</label>
+      <select class="form-select w-auto" [formControl]="paymentMethodControl">
+        <option value="cod">Cash on Delivery</option>
+        <option value="card">Card</option>
+      </select>
+    </div>
+  
+    <!-- Order Summary -->
+    <div class="mt-5">
+      <h5>Order Summary</h5>
+      <ul class="list-group mb-3" *ngIf="cartItems$ | async as items">
+        <li class="list-group-item d-flex justify-content-between" *ngFor="let item of items">
+          <div>{{ item.product.name }} x {{ item.quantity }}</div>
+          <div>${{ (item.product.price).toFixed(2) }}</div>
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
+          <strong>Total</strong>
+          <strong>${{ (totalAmount$ | async)?.toFixed(2) }}</strong>
+        </li>
+      </ul>
+      <button class="btn btn-dark w-100" (click)="onSubmit()">Place Order</button>
+    </div>
+  </div>  
+
+
+  <!-- Address Selection Modal -->
+<div class="modal fade" id="addressModal" tabindex="-1" aria-labelledby="addressModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Select Shipping Address</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div *ngIf="userAddresses.length > 0; else noAddresses">
+            <div *ngFor="let address of userAddresses" class="border rounded p-3 mb-2">
+              <p class="mb-1"><strong>{{ address.name }}</strong></p>
+              <p class="mb-1">{{ address.addressLine1 }}</p>
+              <p class="mb-1">{{ address.city }}, {{ address.state }} - {{ address.postalCode }}</p>
+              <button class="btn btn-sm btn-outline-success mt-2" (click)="selectAddress(address)" data-bs-dismiss="modal">Select</button>
+            </div>
+          </div>
+          <ng-template #noAddresses>
+            <p>No addresses found. Please add one in your profile.</p>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>  

@@ -1,0 +1,111 @@
+<div class="container my-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card shadow-sm">
+          <div class="card-body p-5">
+            <h2 class="card-title text-center mb-4">Add New Product</h2>
+  
+            <!-- Product Info -->
+            <form (ngSubmit)="submit()">
+              <div class="row mb-3">
+                <div class="col-md-4">
+                  <label class="form-label">Product Name</label>
+                  <input type="text" class="form-control" [(ngModel)]="product.name" name="name" required />
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Price</label>
+                  <input type="number" class="form-control" [(ngModel)]="product.price" name="price" required />
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Total Stock</label>
+                  <input type="number" class="form-control" [(ngModel)]="product.stock" name="stock" required />
+                </div>
+              </div>
+  
+              <!-- Description -->
+              <div class="mb-3">
+                <label class="form-label">Description</label>
+                <textarea class="form-control" [(ngModel)]="product.description" name="description" rows="3"></textarea>
+              </div>
+  
+              <!-- Brand & Category -->
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label class="form-label">Brand</label>
+                  <select class="form-select"
+        [(ngModel)]="product.brandId"
+        name="brandId"
+        required
+        [compareWith]="compareById">
+  <option *ngFor="let brand of brands" [ngValue]="brand.id">{{ brand.name }}</option>
+</select>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Category</label>
+                  <select class="form-select" [(ngModel)]="product.categoryId" name="categoryId" required>
+                    <option *ngFor="let category of categories" [ngValue]="category.id">{{ category.name }}</option>
+                  </select>
+                </div>
+              </div>
+  
+              <!-- Image Upload -->
+              <div class="mb-3">
+                <label class="form-label">Upload Images</label>
+                <input class="form-control" type="file" (change)="onImageSelect($event)" multiple />
+                <div *ngFor="let img of imagePreviews; let i = index" class="d-flex align-items-center gap-3 mt-3">
+                  <img [src]="img.url" class="rounded" style="width: 60px; height: 60px; object-fit: cover;" />
+                  <div>
+                    <input type="radio" [value]="i" name="mainImage" [(ngModel)]="mainImageIndex" />
+                    <small>Main</small>
+                  </div>
+                  <button type="button" class="btn btn-sm btn-outline-secondary" (click)="moveImageUp(i)">⬆</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary" (click)="moveImageDown(i)">⬇</button>
+                  <button type="button" class="btn btn-sm btn-outline-danger" (click)="removeImage(i)">❌</button>
+                </div>
+              </div>
+  
+              <!-- Toggle Variants -->
+              <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" [(ngModel)]="hasVariants" name="hasVariants" />
+                <label class="form-check-label">Add Variants</label>
+              </div>
+  
+              <!-- Variant Inputs -->
+              <div *ngIf="hasVariants" class="mb-3 border rounded p-3">
+                <div *ngFor="let v of product.variants; let vi = index" class="row g-2 align-items-end mb-2">
+                  <div class="col-md-3">
+                    <input class="form-control" [(ngModel)]="v.size" placeholder="Size" name="size{{vi}}" />
+                  </div>
+                  <div class="col-md-3">
+                    <input class="form-control" [(ngModel)]="v.color" placeholder="Color" name="color{{vi}}" />
+                  </div>
+                  <div class="col-md-2">
+                    <input class="form-control" type="number" [(ngModel)]="v.stock" placeholder="Stock" name="stock{{vi}}" />
+                  </div>
+                  <div class="col-md-3">
+                    <input class="form-control" [(ngModel)]="v.sku" placeholder="SKU" name="sku{{vi}}" />
+                  </div>
+                  <div class="col-md-1">
+                    <button type="button" class="btn btn-sm btn-danger" (click)="removeVariant(vi)">❌</button>
+                  </div>
+                </div>
+                <button type="button" class="btn btn-outline-dark btn-sm mt-2" (click)="addVariant()">+ Add Variant</button>
+              </div>
+  
+              <!-- Submit -->
+              <button type="submit" class="btn btn-dark w-100 mb-3" [disabled]="isLoading">
+                <span *ngIf="!isLoading">Save Product</span>
+                <span *ngIf="isLoading">
+                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                  Loading...
+                </span>
+              </button>
+  
+            </form>
+  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

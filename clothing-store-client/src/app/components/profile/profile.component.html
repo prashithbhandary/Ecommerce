@@ -1,0 +1,18 @@
+<div class="container my-4">
+    <h3>Edit Profile</h3>
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label>Email</label>
+        <input class="form-control" formControlName="email" />
+      </div>
+      <div class="mb-3">
+        <label>Full Name</label>
+        <input class="form-control" formControlName="fullName" />
+      </div>
+      <div class="mb-3">
+        <label>Phone Number</label>
+        <input class="form-control" formControlName="phoneNumber" />
+      </div>
+      <button class="btn btn-primary" type="submit" [disabled]="profileForm.invalid">Update Profile</button>
+    </form>
+  </div>  
